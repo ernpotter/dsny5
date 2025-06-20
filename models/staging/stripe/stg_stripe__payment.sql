@@ -1,25 +1,24 @@
--- source import
-WITH 
+with 
 
-source AS (
+source as (
 
-    SELECT *
+    select * from {{ source('stripe', 'payment') }}
 
-    FROM raw.stripe.payment
 ),
 
---final CTE
-renamed AS (
-    SELECT
-    id as payment_id,
-    orderid as order_id,
-    paymentmethod as payment_method,
-    status,
-    amount,
-    created as created_at,
-    _batched_at
+renamed as (
 
-    FROM source
+    select
+        id,
+        orderid,
+        paymentmethod,
+        status,
+        amount,
+        created,
+        _batched_at
+
+    from source
+
 )
 
-SELECT * FROM renamed
+select * from renamed
